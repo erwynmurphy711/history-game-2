@@ -21,7 +21,7 @@ import random.Game.TitleScreenHandler;
 public class Game {
 
 	
-	// testing commit
+	// testing commit 2
 	JFrame window;
 	Container con;
 	JPanel titleNamePanel;
@@ -29,7 +29,7 @@ public class Game {
 			lifeScreenStockPanel, lifeScreenContinuePanel, lifeScreenStockAddRemovePanel, lifeScreenWalletPanel,
 			familyScreenBuyPanel, familyScreenPeoplePanel, familyScreenFoodAmountPanel, familyScreenContinuePanel,
 			familyScreenMedicineAmountPanel, familyScreenFeedPanel, familyScreenReturnPanel, newsScreenPanel,
-			newsScreenTextPanel, newsScreenLabelPanel, hungerPanel;
+			newsScreenTextPanel, newsScreenLabelPanel, hungerPanel, emergencyScreenButtonPanel;
 	JLabel weekScreenLabel, lifeScreenStockLabel, lifeScreenWalletLabel, familyScreenFoodLabel1, familyScreenFoodLabel2,
 			familyScreenFoodLabel3, familyScreenMedicineLabel, familyScreenPlaceholderLabel1,
 			familyScreenPlaceholderLabel2, newsScreenStockLabel, newsScreenSalaryLabel, newsScreenFamilyLeftLabel,
@@ -40,12 +40,13 @@ public class Game {
 	Font walletFont = new Font("Times New Roman", Font.PLAIN, 45);
 	JButton startButton, introductionButton, weekScreenButton, lifeScreenContinueButton, lifeScreenStockAddButton,
 			lifeScreenStockRemoveButton, familyScreenContinueButton, familyScreenFoodBuyButton,
-			familyScreenMedicineBuyButton, familyScreenFeedButton, familyScreenReturnButton, newsScreenButton;
+			familyScreenMedicineBuyButton, familyScreenFeedButton, familyScreenReturnButton, newsScreenButton,
+			emergencyScreenButton;
 	JTextArea titleNameArea, introductionTextArea, newsScreenTextArea;
 	int introductionDialogueSwitch, week, stocks, weekSetupCheck, lifeSetupCheck, wallet, stockPrice, familySetupCheck,
 			foodPrice, medicinePrice, foodAmount, medicineAmount, food1Check, food2Check, food3Check, medicineCheck,
 			salary, feedCheck, familyHungerCheck, newsSetupCheck, familyLeftCheck, yourselfHungerCheck, familySalary,
-			test;
+			emergencyScreenCheck, badJobCheck;
 	double stockPercentage;
 	String buttonAction, position;
 
@@ -109,6 +110,9 @@ public class Game {
 		familyLeftCheck = 0;
 		yourselfHungerCheck = 0;
 		familySalary = 10;
+		emergencyScreenCheck = 0;
+		badJobCheck = 2;
+		
 		// Stock Stuff
 		stockPercentageList.addAll(Arrays.asList(stock1, stock2, stock3, stock4, stock5, stock6, stock7, stock8, stock9,
 				stock10, stock11, stock12, stock13));
@@ -596,6 +600,7 @@ public class Game {
 			hungerLabel.setText("Hungry");
 		} else if (yourselfHungerCheck == 2 && familyLeftCheck == 1) {
 			hungerPanel.setVisible(true);
+			badJobCheck++;
 			hungerLabel.setText("VERY HUNGRY");
 		}
 		lifeScreenContinuePanel.setVisible(true);
@@ -610,6 +615,8 @@ public class Game {
 
 	public void intermediate() {
 
+		System.out.println("badJobCheck "+badJobCheck);
+		
 		wallet += salary;
 		
 		lifeScreenWalletLabel.setText("Wallet: $ " + wallet);
@@ -626,7 +633,10 @@ public class Game {
 		
 		
 		if(yourselfHungerCheck == 3) {
+			deathScreen();
 			System.out.println("YOUR DEAD");
+		} else if (week == 4 || badJobCheck == 3) {
+			emergencyScreen();
 		} else {
 			news();
 		}
@@ -634,6 +644,16 @@ public class Game {
 		
 
 //		System.out.println(familyHungerCheck);
+	}
+	
+	public void deathScreen() {
+		
+		weekScreenPanel.setVisible(false);
+		weekButtonPanel.setVisible(false);
+		
+		newsScreenTextPanel.setVisible(true);
+		newsScreenTextArea.setText("You have died of Hungry, restart the game to try again");
+		
 	}
 
 	public int feedCheck() {
@@ -677,7 +697,12 @@ public class Game {
 
 		weekScreenPanel.setVisible(false);
 		weekButtonPanel.setVisible(false);
-
+		
+		if(emergencyScreenCheck == 1) {
+			emergencyScreenButtonPanel.setVisible(false);
+		}
+		
+		
 		position = "news";
 
 		if (newsSetupCheck == 0) {
@@ -754,6 +779,47 @@ public class Game {
 			newsScreenTextArea.setText(newsText.get(week - 1));
 		}
 
+	}
+	
+	public void emergencyScreen() {
+		
+		
+		weekScreenPanel.setVisible(false);
+		weekButtonPanel.setVisible(false);
+		
+		if(emergencyScreenCheck == 0) {
+			
+			emergencyScreenButtonPanel = new JPanel();
+			emergencyScreenButtonPanel.setBackground(Color.white);
+			emergencyScreenButtonPanel.setBounds(300, 450, 200, 50);
+			
+			emergencyScreenButton = new JButton("Continue");
+			emergencyScreenButton.setBackground(Color.white);
+			emergencyScreenButton.setForeground(Color.black);
+			emergencyScreenButton.setFocusable(false);
+			emergencyScreenButton.setFont(normalFont);
+			emergencyScreenButton.addActionListener(lsHandler);
+			emergencyScreenButton.setActionCommand("emergencyScreenButton");
+			
+			emergencyScreenButtonPanel.add(emergencyScreenButton);
+			
+			con.add(emergencyScreenButtonPanel);
+			
+			emergencyScreenCheck = 1;
+			
+		}
+		
+		emergencyScreenButtonPanel.setVisible(true);
+		newsScreenTextPanel.setVisible(true);
+		
+		if(week == 9) {
+			newsScreenTextArea.setText("this is a test for week");
+		} else if (badJobCheck == 3) {
+			newsScreenTextArea.setText("This is a test for job");
+		}
+			
+		
+		
 	}
 	
 	public void newsIntermediate() {
@@ -1068,6 +1134,13 @@ public class Game {
 			case "newsScreenButton":
 
 				familyScreen();
+				break;
+			
+			case "emergencyScreenButton":
+				
+				news();
+				
+				break;
 			}
 
 		}
