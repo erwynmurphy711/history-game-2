@@ -20,6 +20,8 @@ import random.Game.TitleScreenHandler;
 
 public class Game {
 
+	
+	// testing commit
 	JFrame window;
 	Container con;
 	JPanel titleNamePanel;
@@ -42,7 +44,8 @@ public class Game {
 	JTextArea titleNameArea, introductionTextArea, newsScreenTextArea;
 	int introductionDialogueSwitch, week, stocks, weekSetupCheck, lifeSetupCheck, wallet, stockPrice, familySetupCheck,
 			foodPrice, medicinePrice, foodAmount, medicineAmount, food1Check, food2Check, food3Check, medicineCheck,
-			salary, feedCheck, familyHungerCheck, newsSetupCheck, familyLeftCheck, yourselfHungerCheck, familySalary;
+			salary, feedCheck, familyHungerCheck, newsSetupCheck, familyLeftCheck, yourselfHungerCheck, familySalary,
+			test;
 	double stockPercentage;
 	String buttonAction, position;
 
