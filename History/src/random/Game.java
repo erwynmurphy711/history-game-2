@@ -26,25 +26,26 @@ public class Game {
 	JPanel startButtonPanel, introductionButtonPanel, introductionTextPanel, weekButtonPanel, weekScreenPanel,
 			lifeScreenStockPanel, lifeScreenContinuePanel, lifeScreenStockAddRemovePanel, lifeScreenWalletPanel,
 			familyScreenBuyPanel, familyScreenPeoplePanel, familyScreenFoodAmountPanel, familyScreenContinuePanel,
-			familyScreenMedicineAmountPanel, familyScreenFeedPanel, familyScreenReturnPanel;
+			familyScreenMedicineAmountPanel, familyScreenFeedPanel, familyScreenReturnPanel, newsScreenPanel,
+			newsScreenTextPanel, newsScreenLabelPanel, hungerPanel;
 	JLabel weekScreenLabel, lifeScreenStockLabel, lifeScreenWalletLabel, familyScreenFoodLabel1, familyScreenFoodLabel2,
 			familyScreenFoodLabel3, familyScreenMedicineLabel, familyScreenPlaceholderLabel1,
-			familyScreenPlaceholderLabel2;
+			familyScreenPlaceholderLabel2, newsScreenStockLabel, newsScreenSalaryLabel, newsScreenFamilyLeftLabel,
+			hungerLabel;
 	JPanel playerPanel;
 	Font titleFont = new Font("Times New Roman", Font.PLAIN, 70); // made a new font called titleFont
 	Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
 	Font walletFont = new Font("Times New Roman", Font.PLAIN, 45);
 	JButton startButton, introductionButton, weekScreenButton, lifeScreenContinueButton, lifeScreenStockAddButton,
 			lifeScreenStockRemoveButton, familyScreenContinueButton, familyScreenFoodBuyButton,
-			familyScreenMedicineBuyButton, familyScreenFeedButton, familyScreenReturnButton;
-	JTextArea titleNameArea, introductionTextArea;
+			familyScreenMedicineBuyButton, familyScreenFeedButton, familyScreenReturnButton, newsScreenButton;
+	JTextArea titleNameArea, introductionTextArea, newsScreenTextArea;
 	int introductionDialogueSwitch, week, stocks, weekSetupCheck, lifeSetupCheck, wallet, stockPrice, familySetupCheck,
 			foodPrice, medicinePrice, foodAmount, medicineAmount, food1Check, food2Check, food3Check, medicineCheck,
-			salary, feedCheck;
+			salary, feedCheck, familyHungerCheck, newsSetupCheck, familyLeftCheck, yourselfHungerCheck, familySalary;
 	double stockPercentage;
 	String buttonAction, position;
-	
-	
+
 	// Stock stuff
 	ArrayList<StockPercent> stockPercentageList = new ArrayList<StockPercent>();
 	StockPercent stock1 = new StockPercent(0.2, false);
@@ -61,16 +62,18 @@ public class Game {
 	StockPercent stock12 = new StockPercent(0.3, true);
 	StockPercent stock13 = new StockPercent(0.1, false);
 	// Stock Stuff
-	
-	
+
+	// News Stuff
+	ArrayList<String> newsText = new ArrayList<String>();
+	// News Stuff
+
 	// Action Handler Stuff
 	TitleScreenHandler tsHandler = new TitleScreenHandler();
 	IntroductionScreenHandler isHandler = new IntroductionScreenHandler();
 	WeekScreenHandler wsHandler = new WeekScreenHandler();
 	LifeScreenHandler lsHandler = new LifeScreenHandler();
 	// Action Handler Stuff
-	
-	
+
 	public static void main(String[] args) {
 
 		new Game();
@@ -98,11 +101,30 @@ public class Game {
 		salary = 0;
 		feedCheck = 0;
 		position = "";
-		
-		//Stock Stuff
-		stockPercentageList.addAll(Arrays.asList(stock1, stock2, stock3, stock4, stock5, stock6, stock7,
-				stock8, stock9, stock10, stock11, stock12, stock13));
-		//Stock Stuff
+		familyHungerCheck = 0;
+		newsSetupCheck = 0;
+		familyLeftCheck = 0;
+		yourselfHungerCheck = 0;
+		familySalary = 10;
+		// Stock Stuff
+		stockPercentageList.addAll(Arrays.asList(stock1, stock2, stock3, stock4, stock5, stock6, stock7, stock8, stock9,
+				stock10, stock11, stock12, stock13));
+		// Stock Stuff
+
+		// News Stuff
+		newsText.addAll(Arrays.asList(
+
+				"", 
+				"Week 2", // the news starts after week 2
+				"Week 3",
+				"Week 4",
+				"Week 5",
+				"Week 6",
+				"Week 7",
+				"Week 8"
+
+		));
+		// News Stuff
 
 		window = new JFrame();
 		window.setSize(800, 600); // size of window
@@ -110,7 +132,7 @@ public class Game {
 		window.getContentPane().setBackground(Color.white); // set color of window
 		window.setLayout(null);
 		con = window.getContentPane();
-		window.setResizable(true); // RESIZABLE YES OR NO
+		window.setResizable(false); // RESIZABLE YES OR NO
 
 		titleNamePanel = new JPanel();
 		titleNamePanel.setBounds(100, 100, 600, 300); // sets size
@@ -167,7 +189,7 @@ public class Game {
 		introductionTextPanel.setBounds(100, 100, 600, 300); // sets size
 		introductionTextPanel.setBackground(Color.white); // sets color
 
-		introductionTextArea = new JTextArea("Testing");
+		introductionTextArea = new JTextArea("This is a game that is a 'simulator' of\nThe Great Depression.");
 		introductionTextArea.setEnabled(false); // Makes text Not selectable
 		introductionTextArea.setBounds(100, 100, 600, 250);
 		introductionTextArea.setBackground(Color.white);
@@ -191,22 +213,27 @@ public class Game {
 
 		switch (introductionDialogueSwitch) {
 		case 0:
-			introductionTextArea.setText("Testing");
+			introductionTextArea.setText("");
 			break;
 		case 1:
-			introductionTextArea.setText("Testing 1");
+			introductionTextArea.setText("In this game, you will discover just how unfair it was\ntowards the people"
+					+ " who lived through it.");
 			break;
 		case 2:
-			introductionTextArea.setText("Testing 2");
+			introductionTextArea.setText("The year is 1925 (and since this is a game and I don't want it to drag too long"
+					+ "), every year will only be 10\nweeks, just to speed up the gameplay a bit.");
 			break;
 		case 3:
-			introductionTextArea.setText("Testing 3");
+			introductionTextArea.setText("At the start of the week, you will get a salary from\nyour job. And you can choose "
+					+ "to buy food (or not), in\norder to feed yourself and family. Although you can\nchoose not to feed them, "
+					+ "I'm just not sure how well\nthat will go for you.");
 			break;
 		case 4:
-			introductionTextArea.setText("Testing 4");
+			introductionTextArea.setText("During the week, you also have the choice to buy\nstocks, I'm not saying you 'need' "
+					+ "to buy stocks, but\nyou might gain some money from it, who knows right,\nI'm sure nothing will happen :).");
 			break;
 		case 5:
-			introductionTextArea.setText("Testing 5");
+			introductionTextArea.setText("Enjoy the game, if there is any bugs, please bare with me, this is my first game.");
 			break;
 		}
 
@@ -214,7 +241,7 @@ public class Game {
 	}
 
 	public void weekScreenSetup() {
-		
+
 		position = "weekScreen";
 
 		// window.setVisible(false);
@@ -256,15 +283,13 @@ public class Game {
 	}
 
 	public void lifeScreenSetup() {
-		
+
 		position = "lifeScreen";
 
 		weekScreenPanel.setVisible(false);
 		weekButtonPanel.setVisible(false);
 //		familyScreenContinuePanel.setVisible(false);
 		familyScreenBuyPanel.setVisible(false);
-
-		
 
 		lifeScreenStockPanel = new JPanel();
 		lifeScreenStockPanel.setBackground(Color.white);
@@ -280,8 +305,6 @@ public class Game {
 		lifeScreenStockLabel.setBackground(Color.white);
 		lifeScreenStockLabel.setForeground(Color.black);
 		lifeScreenStockLabel.setFont(titleFont);
-
-		
 
 		lifeScreenStockAddButton = new JButton("Add");
 		lifeScreenStockAddButton.setBackground(Color.white);
@@ -301,22 +324,22 @@ public class Game {
 
 		lifeScreenStockAddRemovePanel.add(lifeScreenStockAddButton);
 		lifeScreenStockAddRemovePanel.add(lifeScreenStockRemoveButton);
-		
+
 		lifeScreenStockPanel.add(lifeScreenStockLabel);
 
 		con.add(lifeScreenWalletPanel);
 		con.add(lifeScreenStockAddRemovePanel);
 		con.add(lifeScreenStockPanel);
-		
 
 		lifeSetupCheck++;
 
 	}
 
 	public void weekScreen() {
-		
+
 		position = "weekScreen";
-		
+
+		hungerPanel.setVisible(false);
 		familyScreenReturnPanel.setVisible(false);
 		familyScreenBuyPanel.setVisible(false);
 //		familyScreenPeoplePanel.setVisible(false);
@@ -338,7 +361,7 @@ public class Game {
 	public void lifeScreen() {
 
 		position = "lifeScreen";
-		
+
 		familyScreenBuyPanel.setVisible(false);
 		weekScreenPanel.setVisible(false);
 		weekButtonPanel.setVisible(false);
@@ -346,7 +369,7 @@ public class Game {
 
 		lifeScreenStockAddRemovePanel.setVisible(true);
 		lifeScreenStockPanel.setVisible(true);
-		
+
 	}
 
 	public class TitleScreenHandler implements ActionListener {
@@ -363,11 +386,21 @@ public class Game {
 		weekButtonPanel.setVisible(false);
 
 		position = "familyScreen";
+
+		hungerPanel = new JPanel();
+		hungerPanel.setBackground(Color.white);
+		hungerPanel.setBounds(460, 410, 350, 40);
+		
+		hungerLabel = new JLabel("Hungry");
+		hungerLabel.setEnabled(true);
+		hungerLabel.setBackground(Color.red);
+		hungerLabel.setForeground(Color.red);
+		hungerLabel.setFont(normalFont);
 		
 		lifeScreenContinuePanel = new JPanel();
 		lifeScreenContinuePanel.setBackground(Color.white);
 		lifeScreenContinuePanel.setBounds(300, 450, 200, 50);
-		
+
 		lifeScreenContinueButton = new JButton("Next Week");
 		lifeScreenContinueButton.setBackground(Color.white);
 		lifeScreenContinueButton.setForeground(Color.black);
@@ -375,7 +408,7 @@ public class Game {
 		lifeScreenContinueButton.addActionListener(lsHandler);
 		lifeScreenContinueButton.setFont(normalFont);
 		lifeScreenContinueButton.setFocusPainted(false);
-		
+
 		familyScreenFoodAmountPanel = new JPanel();
 		familyScreenFoodAmountPanel.setBackground(Color.white);
 		familyScreenFoodAmountPanel.setBounds(50, 50, 200, 50);
@@ -383,7 +416,7 @@ public class Game {
 
 		familyScreenFeedPanel = new JPanel();
 		familyScreenFeedPanel.setBackground(Color.white);
-		familyScreenFeedPanel.setBounds(450, 450, 350, 50);
+		familyScreenFeedPanel.setBounds(460, 450, 350, 50);
 
 		familyScreenFeedButton = new JButton("Don't Feed Family");
 		familyScreenFeedButton.setBackground(Color.white);
@@ -468,11 +501,11 @@ public class Game {
 		familyScreenContinuePanel = new JPanel();
 		familyScreenContinuePanel.setBackground(Color.white);
 		familyScreenContinuePanel.setBounds(50, 450, 150, 50);
-		
+
 		familyScreenReturnPanel = new JPanel();
 		familyScreenReturnPanel.setBackground(Color.white);
 		familyScreenReturnPanel.setBounds(50, 400, 150, 50);
-		
+
 		familyScreenReturnButton = new JButton("Shop");
 		familyScreenReturnButton.setBackground(Color.white);
 		familyScreenReturnButton.setForeground(Color.black);
@@ -505,7 +538,24 @@ public class Game {
 		familyScreenContinuePanel.add(familyScreenContinueButton);
 		familyScreenBuyPanel.add(familyScreenFoodBuyButton);
 		familyScreenBuyPanel.add(familyScreenMedicineBuyButton);
-
+		hungerPanel.add(hungerLabel);
+		
+		System.out.println("youhungercheck "+yourselfHungerCheck);
+		if(familyHungerCheck == 0 && familyLeftCheck == 0) {
+			hungerPanel.setVisible(false);
+		} else if (familyHungerCheck == 1 && familyLeftCheck == 0) {
+			hungerPanel.setVisible(true);
+		} else if (yourselfHungerCheck == 0 && familyLeftCheck == 1) {
+			hungerPanel.setVisible(false);
+		} else if (yourselfHungerCheck == 1 && familyLeftCheck == 1) {
+			hungerPanel.setVisible(true);
+			hungerLabel.setText("Hungry");
+		} else if (yourselfHungerCheck == 2 && familyLeftCheck == 1) {
+			hungerPanel.setVisible(true);
+			hungerLabel.setText("VERY HUNGRY");
+		}
+		
+		con.add(hungerPanel);
 		con.add(lifeScreenContinuePanel);
 		con.add(familyScreenReturnPanel);
 		con.add(familyScreenFeedPanel);
@@ -519,13 +569,32 @@ public class Game {
 	}
 
 	public void familyScreen() {
-		
+
 		position = "familyScreen";
 
+		newsScreenLabelPanel.setVisible(false);
+		newsScreenTextPanel.setVisible(false);
 		weekScreenPanel.setVisible(false);
 		weekButtonPanel.setVisible(false);
-		
-		
+		newsScreenPanel.setVisible(false);
+
+		if(familyLeftCheck == 1) {
+			familyScreenFeedButton.setText("Don't Feed Yourself");
+		}
+		System.out.println("youhungercheck "+yourselfHungerCheck);
+		if(familyHungerCheck == 0 && familyLeftCheck == 0) {
+			hungerPanel.setVisible(false);
+		} else if (familyHungerCheck == 1 && familyLeftCheck == 0) {
+			hungerPanel.setVisible(true);
+		} else if (yourselfHungerCheck == 0 && familyLeftCheck == 1) {
+			hungerPanel.setVisible(false);
+		} else if (yourselfHungerCheck == 1 && familyLeftCheck == 1) {
+			hungerPanel.setVisible(true);
+			hungerLabel.setText("Hungry");
+		} else if (yourselfHungerCheck == 2 && familyLeftCheck == 1) {
+			hungerPanel.setVisible(true);
+			hungerLabel.setText("VERY HUNGRY");
+		}
 		lifeScreenContinuePanel.setVisible(true);
 		familyScreenReturnPanel.setVisible(true);
 		familyScreenFeedPanel.setVisible(true);
@@ -539,24 +608,183 @@ public class Game {
 	public void intermediate() {
 
 		wallet += salary;
+		
 		lifeScreenWalletLabel.setText("Wallet: $ " + wallet);
+
+		feedCheck();
+		
+		if(familyLeftCheck == 1) {
+			familySalary = 0;
+		}
+		
+		wallet += familySalary;
 		
 		stock();
-		familyScreen();
+		
+		
+		if(yourselfHungerCheck == 3) {
+			System.out.println("YOUR DEAD");
+		} else {
+			news();
+		}
+		
+		
+
+//		System.out.println(familyHungerCheck);
+	}
+
+	public int feedCheck() {
+
+		if (familyLeftCheck == 0) {
+			if (feedCheck == 1) {
+				feedCheck = 0;
+				familyHungerCheck = 0;
+				yourselfHungerCheck = 0;
+				familyScreenFeedButton.setText("Don't Feed Family");
+			} else if (feedCheck == 0) {
+				yourselfHungerCheck++;
+				familyHungerCheck++;
+			}
+
+		} else if (familyLeftCheck == 1) {
+
+			if (feedCheck == 1) {
+				feedCheck = 0;
+				yourselfHungerCheck = 0;
+				familyScreenFeedButton.setText("Don't Feed Yourself");
+			} else if (feedCheck == 0) {
+				yourselfHungerCheck++;
+			}
+
+		}
+
+		if (familyHungerCheck == 2) {
+			System.out.println("Family Left");
+			familyLeftCheck = 1;
+		}
+		
+		
+		System.out.println("familyLeftCheck"+familyLeftCheck);
+		System.out.println("familyHungerCheck"+familyHungerCheck);
+		return 0;
+
+	}
+
+	public void news() {
+
+		weekScreenPanel.setVisible(false);
+		weekButtonPanel.setVisible(false);
+
+		position = "news";
+
+		if (newsSetupCheck == 0) {
+
+			newsScreenPanel = new JPanel();
+			newsScreenPanel.setBackground(Color.white);
+			newsScreenPanel.setBounds(300, 450, 200, 50);
+
+			newsScreenButton = new JButton("Begin Week");
+			newsScreenButton.setBackground(Color.white);
+			newsScreenButton.setForeground(Color.black);
+			newsScreenButton.setFocusPainted(false);
+			newsScreenButton.addActionListener(lsHandler);
+			newsScreenButton.setActionCommand("newsScreenButton");
+			newsScreenButton.setFont(normalFont);
+
+			newsScreenTextPanel = new JPanel();
+			newsScreenTextPanel.setBackground(Color.white);
+			newsScreenTextPanel.setBounds(100, 100, 600, 150);
+			
+			newsScreenLabelPanel = new JPanel();
+			newsScreenLabelPanel.setBackground(Color.white);
+			newsScreenLabelPanel.setBounds(100, 250, 600, 150);
+			newsScreenLabelPanel.setLayout(new GridLayout(3,1));
+			
+			newsScreenStockLabel = new JLabel("Stock");
+			newsScreenStockLabel.setEnabled(false);
+			newsScreenStockLabel.setBackground(Color.white);
+			newsScreenStockLabel.setForeground(Color.black);
+			newsScreenStockLabel.setFont(normalFont);
+			
+			newsScreenFamilyLeftLabel = new JLabel("Family Left");
+			newsScreenFamilyLeftLabel.setEnabled(false);
+			newsScreenFamilyLeftLabel.setBackground(Color.white);
+			newsScreenFamilyLeftLabel.setForeground(Color.black);
+			newsScreenFamilyLeftLabel.setFont(normalFont);
+			
+			newsScreenSalaryLabel = new JLabel("Salary");
+			newsScreenSalaryLabel.setEnabled(false);
+			newsScreenSalaryLabel.setBackground(Color.white);
+			newsScreenSalaryLabel.setForeground(Color.black);
+			newsScreenSalaryLabel.setFont(normalFont);
+
+			newsScreenTextArea = new JTextArea("test");
+			newsScreenTextArea.setEnabled(false); // Makes text Not selectable
+			newsScreenTextArea.setBounds(100, 100, 600, 250);
+			newsScreenTextArea.setBackground(Color.white);
+			newsScreenTextArea.setForeground(Color.black);
+			newsScreenTextArea.setFont(normalFont);
+			newsScreenTextArea.setLineWrap(true); // Warps your lines automatically
+
+			newsScreenTextArea.setText(newsText.get(week - 1));
+			
+			newsIntermediate();
+			
+			newsScreenLabelPanel.add(newsScreenStockLabel);
+			newsScreenLabelPanel.add(newsScreenSalaryLabel);
+			newsScreenLabelPanel.add(newsScreenFamilyLeftLabel);
+			newsScreenPanel.add(newsScreenButton);
+			newsScreenTextPanel.add(newsScreenTextArea);
+
+			con.add(newsScreenLabelPanel);
+			con.add(newsScreenTextPanel);
+			con.add(newsScreenPanel);
+			newsSetupCheck = 1;
+
+		} else {
+
+			newsIntermediate();
+			
+			newsScreenLabelPanel.setVisible(true);
+			newsScreenTextPanel.setVisible(true);
+			newsScreenPanel.setVisible(true);
+			newsScreenTextArea.setText(newsText.get(week - 1));
+		}
+
+	}
+	
+	public void newsIntermediate() {
+	
+		
+		if (stockPercentageList.get(week - 2).getNegative() == false) {
+			newsScreenStockLabel.setText("Last week the Stock went up "+ (int)( stockPercentageList.get(week - 2).getStockPercent()*100 )+" %");
+		} else if (stockPercentageList.get(week - 2).getNegative() == true) {
+			newsScreenStockLabel.setText("Last week the Stock went down "+ (int)( stockPercentageList.get(week - 2).getStockPercent()*100 )+" %");
+		}
+		
+		newsScreenSalaryLabel.setText("Your Job earned you $ "+salary);
+		
+		if(familyLeftCheck == 0) {
+			newsScreenFamilyLeftLabel.setText("Your Family Earned you $ "+familySalary);
+		} else if (familyLeftCheck == 1){
+			newsScreenFamilyLeftLabel.setText("Your Family Left you because you didn't feed them.");
+		}
+	
+		
 	}
 
 	public int stock() {
- 
-		if(stockPercentageList.get(week-2).getNegative() == false) {
-			stockPercentage = 1 + stockPercentageList.get(week-2).getStockPercent();
-			stocks = (int)(stocks*stockPercentage);
-			stockPrice = (int)(stockPrice*stockPercentage);
-			lifeScreenStockLabel.setText("$  "+ stocks);
-		} else if (stockPercentageList.get(week-2).getNegative()==true) {
-			stockPercentage = 1 - stockPercentageList.get(week-2).getStockPercent();
-			stocks = (int)(stocks*stockPercentage);
-			stockPrice = (int)(stockPrice*stockPercentage);
-			lifeScreenStockLabel.setText("$  "+ stocks);
+
+		if (stockPercentageList.get(week - 2).getNegative() == false) {
+			stockPercentage = 1 + stockPercentageList.get(week - 2).getStockPercent();
+			stocks = (int) (stocks * stockPercentage);
+			stockPrice = (int) (stockPrice * stockPercentage);
+			lifeScreenStockLabel.setText("$  " + stocks);
+		} else if (stockPercentageList.get(week - 2).getNegative() == true) {
+			stockPercentage = 1 - stockPercentageList.get(week - 2).getStockPercent();
+			stocks = (int) (stocks * stockPercentage);
+			stockPrice = (int) (stockPrice * stockPercentage);
+			lifeScreenStockLabel.setText("$  " + stocks);
 		}
 		return 0;
 	}
@@ -612,34 +840,32 @@ public class Game {
 				break;
 			case "lifeScreenStockRemoveButton":
 
-				if(stocks > 0) {
-					
-					wallet+=stocks;
+				if (stocks > 0) {
+
+					wallet += stocks;
 					stocks = 0;
-					lifeScreenWalletLabel.setText("Wallet: $ "+ wallet);
+					lifeScreenWalletLabel.setText("Wallet: $ " + wallet);
 					lifeScreenStockLabel.setText("" + stocks);
-					
+
 				} else {
 					System.out.println("No stock");
 				}
-				
 
 				break;
 			case "lifeScreenContinueButton":
 
-				
-				if(lifeSetupCheck==0) {
+				if (lifeSetupCheck == 0) {
 					lifeScreenSetup();
 				} else {
 					week++;
 					weekScreen();
 					System.out.println("Continue");
 				}
-				
+
 				break;
 
 			case "familyScreenContinueButton":
-				
+
 				if (lifeSetupCheck == 0) {
 					lifeScreenSetup();
 				} else {
@@ -707,72 +933,138 @@ public class Game {
 
 			case "familyScreenFeedButton":
 
-				if (feedCheck == 0) {
+				if (familyLeftCheck == 0) {
 
-					if (foodAmount >= 1) {
+					if (feedCheck == 0) {
 
-						if (food3Check == 1) {
+						if (foodAmount >= 1) {
 
-							foodAmount--;
-							food3Check = 0;
-							familyScreenFoodLabel3.setText("X");
-							familyScreenFeedButton.setText("Feed Family");
-							feedCheck = 1;
-						} else if (food2Check == 1) {
+							if (food3Check == 1) {
 
-							foodAmount--;
-							food2Check = 0;
-							familyScreenFoodLabel2.setText("X");
-							familyScreenFeedButton.setText("Feed Family");
-							feedCheck = 1;
-						} else if (food1Check == 1) {
+								foodAmount--;
+								food3Check = 0;
+								familyScreenFoodLabel3.setText("X");
+								familyScreenFeedButton.setText("Feed Family");
+								feedCheck = 1;
+							} else if (food2Check == 1) {
 
-							foodAmount--;
-							food1Check = 0;
-							familyScreenFoodLabel1.setText("X");
-							familyScreenFeedButton.setText("Feed Family");
-							feedCheck = 1;
+								foodAmount--;
+								food2Check = 0;
+								familyScreenFoodLabel2.setText("X");
+								familyScreenFeedButton.setText("Feed Family");
+								feedCheck = 1;
+							} else if (food1Check == 1) {
+
+								foodAmount--;
+								food1Check = 0;
+								familyScreenFoodLabel1.setText("X");
+								familyScreenFeedButton.setText("Feed Family");
+								feedCheck = 1;
+							}
+						}
+
+					} else if (feedCheck == 1) {
+
+						if (food1Check == 0) {
+
+							foodAmount++;
+							food1Check = 1;
+							familyScreenFoodLabel1.setText("O");
+							familyScreenFeedButton.setText("Don't Feed Family");
+							feedCheck = 0;
+						} else if (food2Check == 0) {
+
+							foodAmount++;
+							food2Check = 1;
+							familyScreenFoodLabel2.setText("O");
+							familyScreenFeedButton.setText("Don't Feed Family");
+							feedCheck = 0;
+						} else if (food3Check == 0) {
+
+							foodAmount++;
+							food3Check = 1;
+							familyScreenFoodLabel3.setText("O");
+							familyScreenFeedButton.setText("Don't Feed Family");
+							feedCheck = 0;
+						} else {
+							System.out.println("Storage Full, Must feed");
 						}
 					}
 
-				} else if (feedCheck == 1) {
+				} else if (familyLeftCheck == 1) {
 
-					if (food1Check == 0) {
+					System.out.println("Food Amount"+foodAmount);
+					System.out.println("Feed Check"+feedCheck);
+					if (feedCheck == 0) {
 
-						foodAmount++;
-						food1Check = 1;
-						familyScreenFoodLabel1.setText("O");
-						familyScreenFeedButton.setText("Don't Feed Family");
-						feedCheck = 0;
-					} else if (food2Check == 0) {
+						if (foodAmount >= 1) {
 
-						foodAmount++;
-						food2Check = 1;
-						familyScreenFoodLabel2.setText("O");
-						familyScreenFeedButton.setText("Don't Feed Family");
-						feedCheck = 0;
-					} else if (food3Check == 0) {
+							if (food3Check == 1) {
 
-						foodAmount++;
-						food3Check = 1;
-						familyScreenFoodLabel3.setText("O");
-						familyScreenFeedButton.setText("Don't Feed Family");
-						feedCheck = 0;
-					} else {
-						System.out.println("Storage Full, Must feed");
+								foodAmount--;
+								food3Check = 0;
+								familyScreenFoodLabel3.setText("X");
+								familyScreenFeedButton.setText("Feed Yourself");
+								feedCheck = 1;
+							} else if (food2Check == 1) {
+
+								foodAmount--;
+								food2Check = 0;
+								familyScreenFoodLabel2.setText("X");
+								familyScreenFeedButton.setText("Feed Yourself");
+								feedCheck = 1;
+							} else if (food1Check == 1) {
+
+								foodAmount--;
+								food1Check = 0;
+								familyScreenFoodLabel1.setText("X");
+								familyScreenFeedButton.setText("Feed Yourself");
+								feedCheck = 1;
+							}
+						}
+
+					} else if (feedCheck == 1) {
+
+						if (food1Check == 0) {
+
+							foodAmount++;
+							food1Check = 1;
+							familyScreenFoodLabel1.setText("O");
+							familyScreenFeedButton.setText("Don't Feed Yourself");
+							feedCheck = 0;
+						} else if (food2Check == 0) {
+
+							foodAmount++;
+							food2Check = 1;
+							familyScreenFoodLabel2.setText("O");
+							familyScreenFeedButton.setText("Don't Feed Yourself");
+							feedCheck = 0;
+						} else if (food3Check == 0) {
+
+							foodAmount++;
+							food3Check = 1;
+							familyScreenFoodLabel3.setText("O");
+							familyScreenFeedButton.setText("Don't Feed Yourself");
+							feedCheck = 0;
+						} else {
+							System.out.println("Storage Full, Must feed");
+						}
 					}
 
 				}
 
 				break;
 			case "familyScreenReturnButton":
-				
-				if(position.equals("lifeScreen")) {
+
+				if (position.equals("lifeScreen")) {
 					familyScreen();
 				} else {
 					System.out.println("Already on Shop");
 				}
 				break;
+			case "newsScreenButton":
+
+				familyScreen();
 			}
 
 		}
